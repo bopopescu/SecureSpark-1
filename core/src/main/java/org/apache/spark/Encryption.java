@@ -24,6 +24,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
 import java.lang.IllegalArgumentException;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * 
@@ -51,7 +52,8 @@ public class Encryption
 		cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
 		byte[] clear_bytes = clear.getBytes("UTF-8");
 		byte[] cipher_bytes = cipher.doFinal(clear_bytes);
-		String output = java.util.Base64.getEncoder().encodeToString(cipher_bytes);
+                String output = Base64.encodeBase64String(cipher_bytes);
+//		String output = java.util.Base64.getEncoder().encodeToString(cipher_bytes);
 		return output;
 	}
 	
@@ -65,7 +67,8 @@ public class Encryption
 	{
 		Cipher cipher = Cipher.getInstance(ENC_TYPE);
 		cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
-		byte[] cipher_bytes = java.util.Base64.getDecoder().decode(cipher_string);
+                byte[] cipher_bytes = Base64.decodeBase64(cipher_string);
+//		byte[] cipher_bytes = java.util.Base64.getDecoder().decode(cipher_string);
 		byte[] clear = cipher.doFinal(cipher_bytes);
 		String output = new String(clear, "UTF-8");
 		return output;
